@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Домашние блинчики</title>
+    <!-- Подключаем шрифт Inter как отличный веб-аналог San Francisco от Apple -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Общие стили и премиальный шрифт Apple / San Francisco / Inter */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #fcfbf7;
+            color: #2c1a11;
+            line-height: 1.7;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Обновленные стили компактного хедера */
+        header {
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(230, 220, 205, 0.5);
+        }
+
+        .header-container {
+            display: flex;
+            flex-direction: row; /* Всё в одну строку */
+            align-items: center;
+            justify-content: space-between; /* Логотип слева, меню справа */
+            padding: 12px 24px; /* Уменьшили отступы сверху и снизу */
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .logo-img {
+            width: 50px; /* Аккуратный размер для шапки */
+            height: 50px;
+            border-radius: 50%; /* Делает картинку идеально круглой */
+            object-fit: cover; /* Защищает логотип от деформации */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Легкий объем */
+            transition: transform 0.2s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05); /* Небольшая анимация при наведении */
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #5d4037;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: color 0.2s ease;
+        }
+
+        nav ul li a:hover {
+            color: #d35400;
+        }
+
+        /* Переключатель языков */
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+            background-color: #f2ebd9;
+            padding: 3px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #5d4037;
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background-color: #d35400;
+            color: white;
+            box-shadow: 0 2px 8px rgba(211, 84, 0, 0.25);
+        }
+
+        /* Большие отступы между разделами (Сайт больше и понятнее) */
+        section {
+            padding: 40px 0;
+            position: relative;
+        }
+
+        /* Чередование фонов для легкого разделения блоков */
+        .bg-light {
+            background-color: #ffffff;
+        }
+
+        .bg-cream {
+            background-color: #f9f5eb;
+            border-top: 1px solid rgba(211, 84, 0, 0.05);
+            border-bottom: 1px solid rgba(211, 84, 0, 0.05);
+        }
+
+        /* Декоративные элементы-заполнители, чтобы не было пусто */
+        .section-divider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .section-divider .line {
+            height: 1px;
+            width: 80px;
+            background: linear-gradient(to right, transparent, #e0d5c1, transparent);
+        }
+
+        .section-divider .dot {
+            font-size: 1.2rem;
+            color: #ffb74d;
+        }
+
+        /* Главная секция */
+        .hero {
+            background-color: #FFF9F3; /* твой фоновый цвет */
+            padding: 120px 0 0 0;       /* УМЕНЬШАЕМ ОТСТУПЫ: сверху 50px, по бокам 0, снизу 0 (чтобы картинка прилипла к краю) */
+            position: relative;
+            overflow: hidden;          /* Чтобы низ картинки, если он уходит ниже секции, аккуратно скрывался */
+        }
+
+        /* Контейнер для текста и картинки */
+        .hero-container {
+            max-width: 1200px;         /* или твоя ширина */
+            margin: 0 auto;
+            display: flex;
+            align-items: center;       /* Центрирует текст по вертикали относительно блока */
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        /* Левая сторона с текстом */
+        .hero-text-side {
+            flex: 1;
+            padding-bottom: 50px;      /* Добавляем искусственный отступ снизу ТОЛЬКО для текста, чтобы он не прижимался к полу */
+        }
+
+        /* Правая сторона с картинкой */
+        .hero-image-side {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-self: flex-end;      /* ПРИЖИМАЕТ КАРТИНКУ К САМОМУ НИЗУ СЕКЦИИ */
+            margin-bottom: -10px;      /* Если нужно, чтобы она прямо "уходила" под срез экрана, сделай минус 20px или 30px */
+        }
+
+        /* Сама аватарка бабушки */
+        .hero-avatar {
+            max-height: 450px;         /* Регулируй высоту бабушки здесь, если она кажется слишком большой или маленькой */
+            display: block;
+        }
+
+        /* Бейдж */
+        .hero-badge {
+            display: inline-block;
+            background-color: #2ecc71;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        /* Главный заголовок */
+        .hero-title {
+            color: #d35400;
+            font-size: 48px;
+            font-weight: 800;
+            margin: 0 0 20px 0;
+            line-height: 1.2;
+        }
+
+        /* Описание */
+        .hero-desc {
+            color: #5c4a3c;
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0 0 30px 0;
+        }
+
+        /* Оранжевая кнопка (возвращаем её к жизни) */
+        .hero-btn {
+            display: inline-block;
+            background-color: #d35400;
+            color: white !important;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(211, 84, 0, 0.3);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .hero-btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        /* Правая сторона с бабушкой */
+        .hero-image-side {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Большая бабушка */
+        .hero-avatar {
+            height: 480px; /* Делаем её крупной */
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Эффект при наведении */
+        .cta-button {
+            display: inline-block;
+            background-color: #d35400;
+            color: white;
+            text-decoration: none;
+            padding: 18px 40px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 8px 24px rgba(211, 84, 0, 0.25);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.03);
+            background-color: #e67e22;
+            box-shadow: 0 10px 28px rgba(230, 126, 34, 0.35);
+        }
+
+        /* Преимущества */
+        .section-title {
+            text-align: center;
+            font-size: 2.4rem;
+            color: #2c1a11;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #795548;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background-color: #ffffff;
+            padding: 45px 35px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border: 1px solid rgba(230, 220, 205, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            color: #d35400;
+            margin-bottom: 14px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: #5d4037;
+            font-size: 1rem;
+        }
+
+        /* Меню */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 40px;
+        }
+
+        .menu-card {
+            background-color: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border: 1px solid rgba(230, 220, 205, 0.4);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-img {
+            height: 240px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .menu-info {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .menu-info h3 {
+            font-size: 1.35rem;
+            color: #2c1a11;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .menu-info p {
+            color: #6d5c56;
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+            flex-grow: 1;
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #27ae60;
+        }
+
+        .order-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.15);
+        }
+
+        .order-btn:hover {
+            transform: scale(1.05);
+            background-color: #2ecc71;
+        }
+
+        /* Как заказать */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .step-card {
+            padding: 20px;
+            position: relative;
+        }
+
+        .step-num {
+            width: 60px;
+            height: 60px;
+            background-color: #c0392b;
+            color: white;
+            font-size: 1.6rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 24px auto;
+            box-shadow: 0 6px 15px rgba(192, 57, 43, 0.2);
+        }
+
+        .step-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #2c1a11;
+        }
+
+        /* Подвал */
+        footer {
+            background-color: #1e120c;
+            color: #e0d5c1;
+            padding: 80px 0 30px 0;
+            border-top: 3px solid #d35400;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-info h4 {
+            color: #ffb74d;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-info p {
+            margin-bottom: 12px;
+            color: #bcaf9c;
+            font-size: 0.95rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 30px;
+            font-size: 0.9rem;
+            color: #8c7e6c;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            section {
+                padding: 80px 0;
+            }
+            .nav-actions {
+                flex-direction: column;
+                gap: 20px;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+        /* СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (Экраны меньше 768px)  */
+        @media screen and (max-width: 768px) {
+    
+        /* 1. Перестраиваем контейнер: теперь всё будет идти в один столбик */
+            .hero-container {
+                flex-direction: column; 
+                text-align: center;      /* Центрируем текст для мобилок (так красивее) */
+                padding: 0 15px;
+            }
+
+        /* 2. Текстовая сторона */
+            .hero-text-side {
+                padding-bottom: 30px;    /* Уменьшаем отступ снизу */
+            }
+
+        /* Делаем заголовки чуть меньше, чтобы они не разрывали экран телефона */
+            .hero-text-side h1, 
+            .hero-text-side .main-title { 
+                font-size: 28px !important; 
+                line-height: 1.2;
+                margin-bottom: 15px;
+            }
+
+        /* Описание (текст про школьников) */
+            .hero-text-side p {
+                font-size: 16px;
+                line-height: 1.4;
+            }
+
+        /* 3. Кнопка заказа */
+            .hero-text-side .btn, 
+            .hero-text-side button,
+            [id*="заказать"] { /* авто-подбор для твоей кнопки */
+                width: 100%;          /* На телефонах кнопка на всю ширину удобнее для пальца */
+                max-width: 300px;     /* Но не делаем её слишком гигантской */
+                margin: 0 auto;
+            }
+
+        /* 4. Сторона с картинкой */
+            .hero-image-side {
+                justify-content: center; /* Центрируем бабушку по горизонтали */
+                align-self: center;      /* Убираем привязку к правому краю */
+                width: 100%;
+                margin-bottom: 0;        /* Сажаем прямо на нижний край экрана */
+            }
+
+        /* Ограничиваем размер бабушки на телефонах, чтобы она не занимала весь экран */
+            .hero-avatar {
+                max-height: 300px;       /* Уменьшаем высоту для мобильных */
+                width: auto;
+                display: block;
+            margin: 0 auto;
+        }
+    
+        /* ИСПРАВЛЕНИЕ ШАПКИ И ЛОГОТИПА НА МОБИЛЬНОМ */
+
+        /* 1. Главный контейнер шапки */
+            header, .header-container {
+                display: flex !important;
+                flex-direction: column !important; /* Выстраиваем элементы вертикально: Лого -> Меню -> Языки */
+                align-items: center !important;    /* Выравниваем всё строго по центру */
+                gap: 15px !important;              /* Делаем одинаковые аккуратные отступы между ними */
+                padding: 15px 10px !important;
+                width: 100% !important;
+                box-sizing: border-box;
+        }
+
+        /* 2. Блок с логотипом */
+            .logo, header img:first-of-type, .header-logo {
+                display: block !important;
+                margin: 0 auto !important;         /* Центрируем само лого */
+                max-height: 60px !important;       /* Ограничиваем высоту, чтобы на телефоне оно не было гигантским */
+                width: auto !important;
+        }
+
+        /* 3. Навигационное меню (ссылки) */
+            nav, .header-menu, .nav-links {
+                display: flex !important;
+                flex-direction: row !important;    /* Ссылки оставляем в ряд */
+                flex-wrap: wrap !important;        /* Но если они не влезают в экран, они аккуратно перенесутся на новую строку, а не сломают верстку */
+                justify-content: center !important;/* Центрируем ссылки */
+                gap: 12px !important;              /* Расстояние между ссылками, чтобы было удобно нажимать пальцем */
+                margin: 0 !important;
+                padding: 0 !important;
+        }
+
+        /* Сами ссылки меню */
+            nav a, .nav-links a {
+                font-size: 14px !important;        /* Чуть уменьшаем шрифт для мобильных */
+                white-space: nowrap !important;    /* Запрещаем перенос одного слова ссылки на две строки */
+        }
+
+        /* 4. Переключатель языков (Russ / Qazaq / Angl) */
+            .lang-switcher, .languages, header div:last-of-type {
+                display: flex !important;
+                justify-content: center !important;
+                gap: 8px !important;               /* Расстояние между кнопками выбора языка */
+                margin-top: 5px !important;
+        }
+}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container header-container">
+            <!-- Логотип слева -->
+            <div class="logo-box" onclick="window.scrollTo(0,0)">
+                <img src="logo.jpg" alt="Ескендір және әже Үй құймақтары" class="logo-img">
+            </div>
+            <div class="nav-actions">
+                <nav>
+                    <ul>
+                        <li><a href="#menu" id="nav-menu">Меню</a></li>
+                        <li><a href="#features" id="nav-features">Почему мы</a></li>
+                        <li><a href="#steps" id="nav-steps">Как заказать</a></li>
+                        <li><a href="#contacts" id="nav-contacts">Контакты</a></li>
+                    </ul>
+                </nav>
+                <div class="lang-switcher">
+                    <button class="lang-btn active" onclick="changeLang('ru')">Russ</button>
+                    <button class="lang-btn" onclick="changeLang('kk')">Qazaq</button>
+                    <button class="lang-btn" onclick="changeLang('en')">Angl</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+    <div class="hero-container">
+        <div class="hero-text-side">
+            <span class="hero-badge" id="hero-badge">ЖЕУГЕ ДАЙЫН • ГОТОВО К УПОТРЕБЛЕНИЮ</span>
+            <h1 class="hero-title" id="hero-title">ДОМАШНИЕ БЛИНЧИКИ</h1>
+            <p class="hero-desc" id="hero-desc">Вкусно и сытно для школьников, безопасно и натурально для детей, одобрено мамами и сделано с любовью по рецепту любимой бабушки!</p>
+            <button class="hero-btn" id="hero-cta" onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})">
+                ЗАКАЗАТЬ ГОРЯЧИЕ БЛИНЧИКИ
+            </button>
+        </div>
+        
+        <div class="hero-image-side">
+            <img src="grandma.png" alt="Бабушка с блинчиками" class="hero-avatar">
+        </div>
+    </div>
+</section>
+
+    <!-- Преимущества (Почему мы) -->
+    <section id="features" class="bg-light">
+        <div class="container">
+            <h2 class="section-title" id="features-title">Махаббатпен — С любовью</h2>
+            <div class="section-divider">
+                <div class="line"></div>
+                <div class="dot">👵</div>
+                <div class="line"></div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">✨</span>
+                    <h3 id="f1-title">Рецепт бабушки</h3>
+                    <p id="f1-desc">Никакой химии. Только настоящие яйца, молоко и мука высшего сорта. Как дома!</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">👦</span>
+                    <!-- Исправлено: добавлен id="f2-title" для перевода -->
+                    <h3 id="f2-title">Для школьников</h3>
+                    <p id="f2-desc">Идеальный сытный перекус между уроками или после тренировки. Заряжает энергией!</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">❤️</span>
+                    <h3 id="f3-title">Выбор мам</h3>
+                    <p id="f3-desc">Чистая кухня, свежие ингредиенты и абсолютная уверенность в качестве каждого блинчика.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu -->
+   <!-- Menu -->
+    <section id="menu" class="bg-cream">
+        <div class="container">
+            <h2 class="section-title" id="menu-title">Наше Горячее Меню</h2>
+            <p class="section-subtitle" id="menu-subtitle">Выберите блинчики, приготовленные с душой</p>
+            <div class="section-divider">
+                <div class="line"></div>
+                <div class="dot">🥞</div>
+                <div class="line"></div>
+            </div>
+            <div class="menu-grid">
+                <!-- Карточка 1: Сметана -->
+                <div class="menu-card">
+                    <img src="https://images.unsplash.com/photo-1519676867240-f03562e64548?auto=format&fit=crop&w=600&q=80" alt="Блинчики со сметаной" class="menu-img">
+                    <div class="menu-info">
+                        <h3 id="m1-title">Блинчики со сметаной (5 шт)</h3>
+                        <p id="m1-desc">Классические домашние блинчики, подаются со свежей, прохладной и густой сметаной. Вкус нашего детства! Упакованы в удобную коробочку.</p>
+                        <div class="menu-footer">
+                            <div class="price-block">
+                                <span style="text-decoration: line-through; color: #a19283; font-size: 1rem; font-weight: 600; display: block; margin-bottom: -4px;">1250 ₸</span>
+                                <span class="price">1000 ₸</span>
+                            </div>
+                            <button class="order-btn id-want-btn" onclick="window.open('https://wa.me/77718270736')">Хочу!</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Карточка 2: Сгущенка -->
+                <div class="menu-card">
+                    <img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=600&q=80" alt="Блинчики со сгущенкой" class="menu-img">
+                    <div class="menu-info">
+                        <h3 id="m2-title">Блинчики со сгущенкой (5 шт)</h3>
+                        <p id="m2-desc">Сладкие, ароматные блинчики, щедро политые настоящим сгущенным молоком. Любимое лакомство всех школьников в порционной коробке!</p>
+                        <div class="menu-footer">
+                            <div class="price-block">
+                                <span style="text-decoration: line-through; color: #a19283; font-size: 1rem; font-weight: 600; display: block; margin-bottom: -4px;">1500 ₸</span>
+                                <span class="price">1250 ₸</span>
+                            </div>
+                            <button class="order-btn id-want-btn" onclick="window.open('https://wa.me/77718270736')">Хочу!</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Карточка 3: Мясо -->
+                <div class="menu-card">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" alt="Блинчики с мясом" class="menu-img">
+                    <div class="menu-info">
+                        <h3 id="m3-title">Сытные блинчики с мясом (5 шт)</h3>
+                        <p id="m3-desc">Тонкие блинчики с начинкой из сочного и нежного мясного фарша со специями. Настоящий полноценный и горячий обед для всей компании!</p>
+                        <div class="menu-footer">
+                            <div class="price-block">
+                                <span style="text-decoration: line-through; color: #a19283; font-size: 1rem; font-weight: 600; display: block; margin-bottom: -4px;">2250 ₸</span>
+                                <span class="price">1750 ₸</span>
+                            </div>
+                            <button class="order-btn id-want-btn" onclick="window.open('https://wa.me/77718270736')">Хочу!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Как заказать -->
+    <section id="steps" class="bg-light">
+        <div class="container">
+            <h2 class="section-title" id="steps-title">Как сделать заказ?</h2>
+            <div class="section-divider">
+                <div class="line"></div>
+                <div class="dot">📦</div>
+                <div class="line"></div>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h3 id="s1-title">Выбирай</h3>
+                    <p id="s1-desc">Выбери блинчики в меню сайта</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h3 id="s2-title">Напиши нам</h3>
+                    <p id="s2-desc">Нажми кнопку 'Хочу' или 'Заказать'</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h3 id="s3-title">Забирай</h3>
+                    <p id="s3-desc">Забирай горячими или жди быструю доставку</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал / Контакты -->
+    <footer id="contacts">
+        <div class="container footer-grid">
+            <div class="footer-info">
+                <h4 id="f-logo">Блины от Бабушки</h4>
+                <p id="f-about">Домашние блины по семейным рецептам с любовью.</p>
+            </div>
+            <div class="footer-info">
+                <h4 id="f-orders-title">Прием заказов</h4>
+                <p id="f-address">📍 г. Актау, (Акшукур 5 квартал 5 дом)</p>
+                <p>📞 +7 (771) 827-07-36</p>
+                <p id="f-time">⏰ Ежедневно с 12:00 до 19:00</p>
+            </div>
+            <div class="footer-info">
+                <h4 id="f-socials-title">Мы в соцсетях</h4>
+                <p id="f-socials-desc">Напишите нам напрямую: ↓ </p>
+                <p><a href="https://wa.me/77718270736" target="_blank" style="color: #ffb74d; text-decoration: none; font-weight: bold;">8 (771) 827-07-36</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p id="f-rights">&copy; 2026 Үй құймақтары. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Скрипт мультиязычности -->
+    <script>
+        const translations = {
+            ru: {
+                logo: "Блины от Бабушки",
+                menu: "Меню", menu_sub: "Выберите блинчики, приготовленные с душой", features: "Почему мы", steps: "Как заказать", contacts: "Контакты",
+                badge: "ЖЕУГЕ ДАЙЫН • ГОТОВО К УПОТРЕБЛЕНИЮ", title: "ДОМАШНИЕ БЛИНЧИКИ",
+                desc: "Вкусно и сытно для школьников, безопасно и натурально для детей, одобрено мамами и сделано с любовью по рецепту любимой бабушки!",
+                cta: "ЗАКАЗАТЬ ГОРЯЧИЕ БЛИНЧИКИ", f_title: "Махаббатпен — С любовью",
+                f1_t: "Рецепт бабушки", f1_d: "Никакой химии. Только настоящие яйца, молоко и мука высшего сорта. Как дома!",
+                f2_t: "Для школьников", f2_d: "Идеальный сытный перекус между уроками или после тренировки. Заряжает энергией!",
+                f3_t: "Выбор мам", f3_d: "Чистая кухня, свежие ингредиенты и абсолютная уверенность в качестве каждого блинчика.",
+                m_title: "Наше Горячее Меню",
+                m1_t: "Блинчики со сметаной (5 шт)", 
+                m1_d: "Классические домашние блинчики, подаются со свежей, прохладной и густой сметаной. Вкус нашего детства! Упакованы в удобную коробочку.",
+                m2_t: "Блинчики со сгущенкой (5 шт)", 
+                m2_d: "Сладкие, ароматные блинчики, щедро политые настоящим сгущенным молоком. Любимое лакомство всех школьников в порционной коробке!",
+                m3_t: "Сытные блинчики с мясом (5 шт)", 
+                m3_d: "Тонкие блинчики с начинкой из сочного и нежного мясного фарша со специями. Настоящий полноценный и горячий обед для всей компании!",
+                want: "Хочу!", s_title: "Как сделать заказ?",
+                s1_t: "Выбирай", s1_d: "Выбери блинчики в меню сайта",
+                s2_t: "Напиши нам", s2_d: "Нажми кнопку 'Хочу' или 'Заказать'",
+                s3_t: "Забирай", s3_d: "Забирай горячими или жди быструю доставку",
+                f_ab: "Домашние блины по семейным рецептам с любовью.", f_or: "Прием заказов",
+                f_ad: "📍 г. Актау, (укажите ваш микрорайон/адрес)", f_ti: "⏰ Ежедневно с 09:00 до 21:00",
+                f_so: "Мы в соцсетях", f_sd: "Напишите нам напрямую:", f_ri: "© 2026 Үй құймақтары. Все права защищены."
+            },
+            kk: {
+                logo: "Әже құймақтары",
+                menu: "Мәзір", menu_sub: "Жан дүниемен дайындалған құймақтарды таңдаңыз", features: "Неге біз", steps: "Тапсырыс беру", contacts: "Байланыс",
+                badge: "ЖЕУГЕ ДАЙЫН", title: "ҮЙ ҚҰЙМАҚТАРЫ",
+                desc: "Мектеп оқушылары үшін дәмді әрі тойымды, балалар үшін қауіпсіз әрі табиғи, аналар мақұлдаған және сүйікті әженің рецепті бойынша махаббатпен дайындалған!",
+                cta: "ЫСТЫҚ ҚҰЙМАҚТАРҒА ТАПСЫРЫС БЕРУ", f_title: "Махаббатпен",
+                f1_t: "Әженің рецепті", f1_d: "Ешқандай химия жоқ. Тек нағыз жұмыртқа, сүт және жоғары сұрыпты ұн. Үйдегідей!",
+                f2_t: "Оқушылар үшін", f2_d: "Сабақ арасында немесе жаттығудан кейін тамаша тойымды тіскебасар. Энергия береді!",
+                f3_t: "Аналардың таңдауы", f3_d: "Таза асүй, балғын ингредиенттер... Әрбір құймақтың сапасына толық сенімділік.",
+                m_title: "Біздің ыстық мәзіріміз",
+                m1_t: "Қаймақ қосылған құймақтар (5 дана)", m1_d: "Балғын, салқын әрі қою қаймақпен ұсынылатын классикалық үй құймақтары. Балалық шағымыздың дәмі!",
+                m2_t: "Қоюлатылған сүт қосылған құймақтар (5 дана)", m2_d: "Нағыз қоюлатылған сүт молынан құйылған тәтті, хош иісті құймақтар. Барлық оқушылардың сүйікті асы!",
+                m3_t: "Ет қосылған тойымды құймақтар (5 дана)", m3_d: "Дәмдеуіштер қосылған шырынды әрі нәзік тартылған ет салынған жұқа құймақтар. Нағыз толыққанды түскі ас!",
+                want: "Қалаймын!", s_title: "Тапсырысты қалай береді?",
+                s1_t: "Тандаңыз", s1_d: "Сайт мәзірінен құймақтарды таңдаңыз",
+                s2_t: "Бізге жазыңыз", s2_d: "'Қалаймын!' немесе 'Тапсырыс беру' батырмасын басыңыз",
+                s3_t: "Алыңыз", s3_d: "Ыстықтай алып кетіңіз немесе жылдам жеткізуді күтіңіз",
+                f_ab: "Отбасылық рецепттер бойынша махаббатпен дайындалған үй құймақтары.", f_or: "Тапсырыстарды қабылдау",
+                f_ad: "📍 Ақтау қ., (мекенжайыңызды көрсетіңіз)", f_ti: "⏰ Күнделікті 09:00-ден 21:00-ге дейін",
+                f_so: "Біз әлеуметтік желілерде", f_sd: "Бізге тікелей жазыңыз:", f_ri: "© 2026 Үй құймақтары. Барлық құқықтар қорғалған."
+            },
+            en: {
+                logo: "Grandma's Pancakes",
+                menu: "Menu", menu_sub: "Choose pancakes made with heart and soul", features: "Why Us", steps: "How to Order", contacts: "Contacts",
+                badge: "READY TO EAT", title: "HOMEMADE PANCAKES",
+                desc: "Tasty and filling for school students, safe and natural for kids, approved by moms, and made with love according to beloved grandma's recipe!",
+                cta: "ORDER HOT PANCAKES", f_title: "Made with Love",
+                f1_t: "Grandma's Recipe", f1_d: "No chemicals. Only real eggs, milk, and premium flour. Just like at home!",
+                f2_t: "For School Students", f2_d: "The perfect filling snack between classes or after training. Boosts your energy!",
+                f3_t: "Moms' Choice", f3_d: "Clean kitchen, fresh ingredients, and absolute confidence in the quality of every single pancake.",
+                m_title: "Our Hot Menu",
+                m1_t: "Pancakes with Sour Cream (5 pcs)", m1_d: "Classic homemade pancakes served with fresh, cool, and thick sour cream. The true taste of childhood!",
+                m2_t: "Pancakes with Condensed Milk (5 pcs)", m2_d: "Sweet, flavorful pancakes generously drizzled with real condensed milk. A favorite treat for all school students!",
+                m3_t: "Filling Pancakes with Meat (5 pcs)", m3_d: "Thin pancakes stuffed with juicy and tender minced meat with spices. A real complete and hearty lunch!",
+                want: "I want it!", s_title: "How to Order?",
+                s1_t: "Choose", s1_d: "Choose your favorite pancakes from the menu",
+                s2_t: "Text Us", s2_d: "Click the 'I want it!' or 'Order' button",
+                s3_t: "Enjoy", s3_d: "Pick them up hot or wait for fast delivery",
+                f_ab: "Homemade pancakes based on family recipes made with love.", f_or: "Order Acceptance",
+                f_ad: "📍 Aktau, (specify your district/address)", f_ti: "⏰ Daily from 09:00 to 21:00",
+                f_so: "Socials", f_sd: "Contact us directly:", f_ri: "© 2026 Homemade Pancakes. All rights reserved."
+            }
+        };
+
+        function changeLang(lang) {
+            // 1. Переключение активного класса на кнопках
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('onclick').includes(`'${lang}'`)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Функция-помощник для безопасного перевода
+            const safeTranslate = (id, text) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.innerText = text;
+                }
+            };
+
+            // 2. Перевод навигации (меню)
+            safeTranslate('nav-menu', translations[lang].menu);
+            safeTranslate('nav-features', translations[lang].features);
+            safeTranslate('nav-steps', translations[lang].steps);
+            safeTranslate('nav-contacts', translations[lang].contacts);
+
+            // 3. Перевод главного экрана (Hero-секция)
+            safeTranslate('hero-badge', translations[lang].badge);
+            safeTranslate('hero-title', translations[lang].title);
+            safeTranslate('hero-desc', translations[lang].desc);
+            safeTranslate('hero-cta', translations[lang].cta);
+
+            // 4. Перевод преимуществ
+            safeTranslate('features-title', translations[lang].f_title);
+            safeTranslate('f1-title', translations[lang].f1_t);
+            safeTranslate('f1-desc', translations[lang].f1_d);
+            safeTranslate('f2-title', translations[lang].f2_t);
+            safeTranslate('f2-desc', translations[lang].f2_d);
+            safeTranslate('f3-title', translations[lang].f3_t);
+            safeTranslate('f3-desc', translations[lang].f3_d);
+
+            // 5. Перевод меню блинчиков
+            safeTranslate('menu-title', translations[lang].m_title);
+            safeTranslate('menu-subtitle', translations[lang].menu_sub);
+            safeTranslate('m1-title', translations[lang].m1_t);
+            safeTranslate('m1-desc', translations[lang].m1_d);
+            safeTranslate('m2-title', translations[lang].m2_t);
+            safeTranslate('m2-desc', translations[lang].m2_d);
+            safeTranslate('m3-title', translations[lang].m3_t);
+            safeTranslate('m3-desc', translations[lang].m3_d);
+
+            // Перевод кнопок "Хочу!"
+            document.querySelectorAll('.id-want-btn').forEach(btn => {
+                btn.innerText = translations[lang].want;
+            });
+
+            // 6. Перевод шагов заказа
+            safeTranslate('steps-title', translations[lang].s_title);
+            safeTranslate('s1-title', translations[lang].s1_t);
+            safeTranslate('s1-desc', translations[lang].s1_d);
+            safeTranslate('s2-title', translations[lang].s2_t);
+            safeTranslate('s2-desc', translations[lang].s2_d);
+            safeTranslate('s3-title', translations[lang].s3_t);
+            safeTranslate('s3-desc', translations[lang].s3_d);
+
+            // 7. Перевод футера
+            safeTranslate('f-logo', translations[lang].logo);
+            safeTranslate('f-about', translations[lang].f_ab);
+            safeTranslate('f-orders-title', translations[lang].f_or);
+            safeTranslate('f-address', translations[lang].f_ad);
+            safeTranslate('f-time', translations[lang].f_ti);
+            safeTranslate('f-socials-title', translations[lang].f_so);
+            safeTranslate('f-socials-desc', translations[lang].f_sd);
+            safeTranslate('f-rights', translations[lang].f_ri);
+        }
+    </script>
+</body>
+</html>
